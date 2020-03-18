@@ -24,7 +24,7 @@ namespace SalesOrderAPI.Connector
             {
                 using (MySqlCommand commandMysql = connMysql.CreateCommand())
                 {
-                    commandMysql.CommandText = "SELECT * FROM cases LIMIT 5";
+                    commandMysql.CommandText = "SELECT so.date_entered as date, so.id AS order_id, so.name AS customer_po, ocs.type_c AS TYPE,  ac.name AS 'name', ocs.note_c AS note, ocs.shipping_method_c AS shipping_method, ocs.shipping_carrier_c AS shipping_carrier, ac.shipping_address_street AS street, ac.shipping_address_city AS city, ac.shipping_address_state AS state, ac.shipping_address_postalcode AS zip_code, accs.country_code_c AS country, ac.phone_office AS phone FROM sm_salesorder so INNER JOIN sm_salesorder_cstm ocs ON ocs.id_c = so.id INNER JOIN accounts ac ON ac.id = account_id_c INNER JOIN accounts_cstm accs ON accs.id_c = ac.id LIMIT 5";
                     commandMysql.CommandType = System.Data.CommandType.Text;
 
 
@@ -36,7 +36,22 @@ namespace SalesOrderAPI.Connector
                     {
                         while (reader.Read())
                         {
-                            allUser.Add(new User { name = reader.GetString(reader.GetOrdinal("Name")), description = reader.GetString(reader.GetOrdinal("Description")) });
+                            allUser.Add(new User {
+                                date = reader.GetString(reader.GetOrdinal("date")),
+                                order_id = reader.GetString(reader.GetOrdinal("order_id")),
+                                customer_po = reader.GetString(reader.GetOrdinal("customer_po")),
+                                TYPE = reader.GetString(reader.GetOrdinal("Type")),
+                                name = reader.GetString(reader.GetOrdinal("Name")),
+                                note = reader.GetString(reader.GetOrdinal("Note")),
+                                shipping_method = reader.GetString(reader.GetOrdinal("shipping_method")),
+                                shipping_carrier = reader.GetString(reader.GetOrdinal("shipping_carrier")),
+                                street = reader.GetString(reader.GetOrdinal("Street")),
+                                city = reader.GetString(reader.GetOrdinal("City")),
+                                state = reader.GetString(reader.GetOrdinal("State")),
+                                zip_code = reader.GetString(reader.GetOrdinal("zip_code")),
+                                country = reader.GetString(reader.GetOrdinal("Country")),
+                                phone = reader.GetString(reader.GetOrdinal("Phone"))
+                            });
                         }
                     }
                 }
